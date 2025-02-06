@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 67205356}
   m_Layer: 0
   m_Name: Casilla11
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 124617448}
   m_Layer: 0
   m_Name: Casilla1
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -349,7 +349,7 @@ GameObject:
   - component: {fileID: 141099247}
   m_Layer: 0
   m_Name: Casilla15
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -455,7 +455,7 @@ GameObject:
   - component: {fileID: 268436845}
   m_Layer: 0
   m_Name: Casilla5
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -561,7 +561,7 @@ GameObject:
   - component: {fileID: 330589012}
   m_Layer: 0
   m_Name: Casilla16
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -667,7 +667,7 @@ GameObject:
   - component: {fileID: 358890301}
   m_Layer: 0
   m_Name: Casilla17
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -773,7 +773,7 @@ GameObject:
   - component: {fileID: 391568901}
   m_Layer: 0
   m_Name: Casilla2
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -879,7 +879,7 @@ GameObject:
   - component: {fileID: 414155158}
   m_Layer: 0
   m_Name: Casilla13
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -985,7 +985,7 @@ GameObject:
   - component: {fileID: 493941844}
   m_Layer: 0
   m_Name: Casilla12
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1091,7 +1091,7 @@ GameObject:
   - component: {fileID: 576407596}
   m_Layer: 0
   m_Name: Casilla7
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1303,7 +1303,7 @@ GameObject:
   - component: {fileID: 672570052}
   m_Layer: 0
   m_Name: Casilla0
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1409,7 +1409,7 @@ GameObject:
   - component: {fileID: 686879894}
   m_Layer: 0
   m_Name: Casilla4
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1609,7 +1609,7 @@ GameObject:
   - component: {fileID: 756198211}
   m_Layer: 0
   m_Name: Casilla8
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1715,7 +1715,7 @@ GameObject:
   - component: {fileID: 833148306}
   m_Layer: 0
   m_Name: Casilla18
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1913,7 +1913,7 @@ GameObject:
   - component: {fileID: 1050639129}
   m_Layer: 0
   m_Name: Casilla19
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2019,7 +2019,7 @@ GameObject:
   - component: {fileID: 1123815951}
   m_Layer: 0
   m_Name: Casilla14
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2125,7 +2125,7 @@ GameObject:
   - component: {fileID: 1351805873}
   m_Layer: 0
   m_Name: Casilla3
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2284,7 +2284,7 @@ GameObject:
   - component: {fileID: 1482947595}
   m_Layer: 0
   m_Name: Casilla6
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2390,7 +2390,7 @@ GameObject:
   - component: {fileID: 1808933385}
   m_Layer: 0
   m_Name: Casilla10
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2602,7 +2602,7 @@ GameObject:
   - component: {fileID: 2049327540}
   m_Layer: 0
   m_Name: Casilla9
-  m_TagString: Untagged
+  m_TagString: Casilla
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
