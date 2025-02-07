@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class Casillas : MonoBehaviour
 {
     public int numcasillas;
 
-    // Start is called before the first frame update
+    
+    void Awake()
+    {
+        string casillastring = this.gameObject.name.Substring(7);
+        numcasillas = int.Parse(casillastring);
+    }
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         
