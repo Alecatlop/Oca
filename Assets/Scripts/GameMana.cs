@@ -9,20 +9,22 @@ public class GameMana : MonoBehaviour
     public int[] vectorCasillas;
     public int[] infoCasillas;
     public GameObject[] vectorObjetos;
-    public CanvasMana canvas;
     public TextMeshProUGUI textodado;
     public TextMeshProUGUI textoturno;
+    public TextMeshProUGUI textoronda;
+    public TextMeshProUGUI textoaviso;
     GameObject fichajugador;
     GameObject fichaIA;
+    GameObject botones;
     int posjugador;
     int posIA;
     int numdado;
-    int turno; // si turno es 0 tira jugador / si es 1 tira IA
-    bool seguir = true;
+    int turno;
+    int ronda = 1;
+    
 
     private void Awake()
     {
-        
         vectorCasillas = new int[21];
         infoCasillas = new int[21];
 
@@ -52,31 +54,12 @@ public class GameMana : MonoBehaviour
         // victoria
         infoCasillas[20] = 99;
 
-        // RELLENAMOS EL VECTOR DE GAMEOBJECTS
-        //vectorObjetos = GameObject.FindGameObjectsWithTag("Casilla");
-
-        // METODO 1: OBTENER LOS HIJOS DE UN PARENT VAC�O
-        //vectorObjetos = GameObject.
-
         // METODO 2: RELLENAR CON UN FOR Y UN FIND
         vectorObjetos = new GameObject[21];
 
         for (int i = 0; i < vectorObjetos.Length; i++)
             vectorObjetos[i] = GameObject.Find("Casilla" + i);
-
-
-        // METODO 3: ORDENAR LA LISTA A PARTIR DE LA LISTA DE TAGS
-        // LA MAS COMPLICADA PERO LA MAS EFICIENTE
-
-        // 21 CASILLAS DESORDENADAS
-        //GameObject[] vectorGOCasillas = GameObject.FindGameObjectsWithTag("Casilla");
-
-        //for (int i = 0; i < vectorGOCasillas.Length; i++)
-        //{
-        //    GameObject casilla = vectorGOCasillas[i];
-        //    // falta terminar ..
-
-        //}
+       
     }
 
     // Start is called before the first frame update
@@ -84,103 +67,248 @@ public class GameMana : MonoBehaviour
     {
         fichajugador = GameObject.Find("Jugador");
         fichaIA = GameObject.Find("IA");
+        botones = GameObject.Find("Botones");
 
-        vectorObjetos[1].GetComponent<Renderer>().material.color = Color.yellow;
-        vectorObjetos[5].GetComponent<Renderer>().material.color = Color.red;
-        vectorObjetos[6].GetComponent<Renderer>().material.color = Color.yellow;
-        vectorObjetos[7].GetComponent<Renderer>().material.color = Color.blue;
-        vectorObjetos[10].GetComponent<Renderer>().material.color = Color.red;
-        vectorObjetos[12].GetComponent<Renderer>().material.color = Color.green;
-        vectorObjetos[13].GetComponent<Renderer>().material.color = Color.blue;
-        vectorObjetos[14].GetComponent<Renderer>().material.color = Color.red;
-        vectorObjetos[18].GetComponent<Renderer>().material.color = Color.green;
-        vectorObjetos[19].GetComponent<Renderer>().material.color = Color.red;
-        vectorObjetos[20].GetComponent<Renderer>().material.color = Color.red;
-        //vectorObjetos[21].GetComponent<Renderer>().material.color = Color.black;
+        botones.SetActive(false);
+
+        for (int i = 0; i < vectorObjetos.Length; i++)
+        {
+            int a = infoCasillas[i];
+
+            if (a == 1)
+            {
+                vectorObjetos[i].GetComponent<Renderer>().material.color = Color.yellow;
+            }
+            else if (a == 2)
+            {
+                vectorObjetos[i].GetComponent<Renderer>().material.color = Color.green;
+            }
+            else if (a == -1)
+            {
+                vectorObjetos[i].GetComponent<Renderer>().material.color = Color.red;
+            }
+            else if (a == 99)
+            {
+                vectorObjetos[i].GetComponent<Renderer>().material.color = Color.black;
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        // comprueba el turno con una variable, Jugador = 0 / IA = 1
         if (turno == 0)
         {
-            TurnoJugador();
+            textoturno.text = "Turno Jugador";
         }
-        //else TurnoIA();
-    }
-
-    private void TurnoJugador()
-    {
-        seguir = true;
-        textoturno.text = "Turno Jugador";
-    }
-
-    private void TurnoIA()
-    {
-        seguir = false;
-        textoturno.text = "Turno IA";
+        else if (turno == 1)
+        {
+            textoturno.text = "Turno IA";
+        }
     }
 
     public void TirarDado()
     {
-        if (seguir == true)
-        {
             StartCoroutine(Espera());
-        }
+    }
+
+    public void Retroceder()
+    {
+        posjugador = posjugador--;
+        fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
+    }
+
+    public void Avanzar()
+    {
+        posjugador = posjugador++;
+        fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
     }
 
     IEnumerator Espera()
     {
         if (turno == 0)
         {
-            textodado.material.color = Color.red;
-            numdado = Random.Range(1, 7);
-            textodado.text = "" + numdado;
-
+            // Lanzar el dado con un número aleatorio
+            textodado.color = Color.red;
+            for (int i = 0; i < 12; i++)
+            {
+                numdado = Random.Range(1, 7);
+                textodado.text = "" + numdado;
+                yield return new WaitForSeconds(0.1f);
+            }
+            
             yield return new WaitForSeconds(1f);
-
-            textodado.material.color = Color.white;
+            numdado = 2;
+            textodado.color = Color.white;
             posjugador = posjugador + numdado;
 
-            if (posjugador >= 21)
+            // comprueba el estado de la casilla si esta ocupada o no
+            int n = vectorCasillas[posjugador];
+
+            if (n == 0)
             {
-                print("VICTORIA");
-                posjugador = 21;
+                vectorCasillas[posjugador] = 1;
+            }
+            else if (n == 2)
+            {
+                botones.SetActive(true);
+                textoaviso.text = "Elige";
+            }
+
+            botones.SetActive(false);
+
+            // Comprueba cuanto ha sacado guardadndo el valor en una variable para moverse a la posición de la casilla
+            if (posjugador >= 20)
+            {
+                textoaviso.text = "VICTORIA";
+                posjugador = 20;
                 fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
+                turno = 2;
+                Time.timeScale = 0;
             }
 
             fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.4f);
 
-            if (posjugador == 1)
+            if (posjugador == 0)
             {
-                print("Teleport");
-                posjugador = 7;
+                textoaviso.text = "Teleport";
+                posjugador = 6;
                 fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
+                vectorCasillas[posjugador] = 1;
             }
-            else if (posjugador == 6)
+            else if (posjugador == 5)
             {
-                print("Teleport2");
-                posjugador = 13;
+                textoaviso.text = "Teleport";
+                posjugador = 12;
                 fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
+                vectorCasillas[posjugador] = 1;
             }
-            else if (posjugador == 12 || posjugador == 18)
+            else if (posjugador == 4 || posjugador == 9 || posjugador == 13 || posjugador == 18 || posjugador == 19)
             {
-                print("vuelves a tirar");
-            }
-            else if (posjugador == 5 || posjugador == 10 || posjugador == 14 || posjugador == 19 || posjugador == 20)
-            {
-                print("Retrocedes");
+                textoaviso.text = "Retrocede";
                 posjugador = posjugador - 3;
                 fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
+                vectorCasillas[posjugador] = 1;
             }
-            
 
-            //turno++;
+            vectorCasillas[(++posjugador) - numdado] = 0;
+
+            if (posjugador != 11 && posjugador != 17)
+            {
+                turno++;
+            }
+            else if (posjugador == 11 || posjugador == 17)
+            {
+                textoaviso.text = "Tira de nuevo";
+            }
+                
+            yield return new WaitForSeconds(1f);
+            textoaviso.text = "";
         }
-        
-        
+        // Turno IA
+        else if (turno == 1)
+        {
+            // Lanzar el dado con un número aleatorio
+            textodado.color = Color.red;
+            for (int i = 0; i < 12; i++)
+            {
+                numdado = Random.Range(1, 7);
+                textodado.text = "" + numdado;
+                yield return new WaitForSeconds(0.1f);
+            }
+
+            numdado = 2;
+           yield return new WaitForSeconds(1f);
+
+            textodado.color = Color.white;
+            posIA = posIA + numdado;
+
+            // comprueba el estado de la casilla si esta ocupada o no
+            int n = vectorCasillas[posIA];
+
+            if (n == 0)
+            {
+                vectorCasillas[posIA] = 2;
+            }
+            else if (n == 1)
+            {
+                // IA Avanza
+                if (posIA++ == 5 || posIA++ == 11 || posIA++ == 17)
+                {
+                    print("avanza");
+                    posIA++;
+                    fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+                    vectorCasillas[posIA] = 2;
+                }
+                // IA Retrocede
+                else if (posIA-- == 0 || posIA-- == 5 || posIA-- == 11 || posIA-- == 17)
+                {
+                    print("retroceder");
+                    posIA--;
+                    fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+                    vectorCasillas[posIA] = 2;
+                }
+                // IA Random
+                else
+                {
+                    print("random");
+                    int b = Random.Range(posIA--, posIA++);
+                    posIA = b;
+                    fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+                    vectorCasillas[posIA] = 2;
+                }
+            }
+
+            // Comprueba cuanto ha sacado guardadndo el valor en una variable para moverse a la posición de la casilla
+            if (posIA >= 20)
+            {
+                textoaviso.text = "DERROTA";
+                posIA = 20;
+                fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+                Time.timeScale = 0;
+                turno = 2;
+            }
+
+            fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+
+            yield return new WaitForSeconds(0.4f);
+
+            if (posIA == 0)
+            {
+                posIA = 6;
+                fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+                vectorCasillas[posIA] = 2;
+            }
+            else if (posIA == 5)
+            {
+                posIA = 12;
+                fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+                vectorCasillas[posIA] = 2;
+            }
+            else if (posIA == 4 || posIA == 9 || posIA == 13 || posIA == 18 || posIA == 19)
+            {
+                posIA = posIA - 3;
+                fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+                vectorCasillas[posIA] = 2;
+            }
+
+            vectorCasillas[(++posIA)-numdado] = 0;
+
+            if (posIA != 11 && posIA != 17)
+            {
+                turno--;
+                ronda++;
+                textoaviso.text = "Lanza el dado";
+                textoronda.text = "Ronda " + ronda;
+            }
+            else if (posIA == 11 || posIA == 17)
+            {
+                textoaviso.text = "IA tira de  nuevo";
+            }
+        }
+
     }
 }
