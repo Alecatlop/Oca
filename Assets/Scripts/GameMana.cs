@@ -16,8 +16,8 @@ public class GameMana : MonoBehaviour
     GameObject fichajugador;
     GameObject fichaIA;
     GameObject botones;
-    int posjugador;
-    int posIA;
+    int posjugador = -1;
+    int posIA =-1;
     int numdado;
     int turno;
     int ronda = 1;
@@ -41,7 +41,7 @@ public class GameMana : MonoBehaviour
         infoCasillas[5] = 1;
 
         // volver a tirar
-        infoCasillas[11] = 2;
+        infoCasillas[11] = 2; // CAMBIAR A 12
         infoCasillas[17] = 2;
 
         // retroceder 3 casillas
@@ -139,7 +139,7 @@ public class GameMana : MonoBehaviour
             }
             
             yield return new WaitForSeconds(1f);
-            numdado = 2;
+            numdado = 3;
             textodado.color = Color.white;
             posjugador = posjugador + numdado;
 
@@ -158,7 +158,7 @@ public class GameMana : MonoBehaviour
 
             botones.SetActive(false);
 
-            // Comprueba cuanto ha sacado guardadndo el valor en una variable para moverse a la posición de la casilla
+            // Comprueba cuanto ha sacado guardando el valor en una variable para moverse a la posición de la casilla
             if (posjugador >= 20)
             {
                 textoaviso.text = "VICTORIA";
@@ -169,11 +169,11 @@ public class GameMana : MonoBehaviour
             }
 
             fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
-
             yield return new WaitForSeconds(0.4f);
 
             if (posjugador == 0)
             {
+                vectorCasillas[posjugador] = 0;
                 textoaviso.text = "Teleport";
                 posjugador = 6;
                 fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
@@ -181,6 +181,7 @@ public class GameMana : MonoBehaviour
             }
             else if (posjugador == 5)
             {
+                vectorCasillas[posjugador] = 0;
                 textoaviso.text = "Teleport";
                 posjugador = 12;
                 fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
@@ -188,13 +189,12 @@ public class GameMana : MonoBehaviour
             }
             else if (posjugador == 4 || posjugador == 9 || posjugador == 13 || posjugador == 18 || posjugador == 19)
             {
+                vectorCasillas[posjugador] = 0;
                 textoaviso.text = "Retrocede";
                 posjugador = posjugador - 3;
                 fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
                 vectorCasillas[posjugador] = 1;
             }
-
-            vectorCasillas[(++posjugador) - numdado] = 0;
 
             if (posjugador != 11 && posjugador != 17)
             {
@@ -220,43 +220,51 @@ public class GameMana : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
             }
 
-            numdado = 2;
+            numdado = 3;
            yield return new WaitForSeconds(1f);
 
             textodado.color = Color.white;
             posIA = posIA + numdado;
-
+            
             // comprueba el estado de la casilla si esta ocupada o no
-            int n = vectorCasillas[posIA];
+            int n2 = vectorCasillas[posIA];
 
-            if (n == 0)
+            if (n2 == 0)
             {
                 vectorCasillas[posIA] = 2;
             }
-            else if (n == 1)
+            else if (n2 == 1)
             {
                 // IA Avanza
-                if (posIA++ == 5 || posIA++ == 11 || posIA++ == 17)
+                if (posIA + 1 == 5 || posIA + 1 == 11 || posIA + 1 == 17)
                 {
-                    print("avanza");
-                    posIA++;
-                    fichaIA.transform.position = vectorObjetos[posIA].transform.position;
-                    vectorCasillas[posIA] = 2;
+                    //print("palante");
+                    //posIA++;
+                    //fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+                    //vectorCasillas[posIA] = 2;
                 }
                 // IA Retrocede
-                else if (posIA-- == 0 || posIA-- == 5 || posIA-- == 11 || posIA-- == 17)
+                else if (posIA - 1 == 0 || posIA - 1 == 5 || posIA - 1 == 11 || posIA - 1 == 17)
                 {
-                    print("retroceder");
-                    posIA--;
-                    fichaIA.transform.position = vectorObjetos[posIA].transform.position;
-                    vectorCasillas[posIA] = 2;
+                    //print("holaaa");
+                    //posIA--;
+                    //fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+                    //vectorCasillas[posIA] = 2;
                 }
                 // IA Random
                 else
                 {
-                    print("random");
-                    int b = Random.Range(posIA--, posIA++);
-                    posIA = b;
+                    int b = Random.Range(0, 2);
+                    
+                    if (b == 0)
+                    {
+                        posIA--;
+                    }
+                    else
+                    {
+                        posIA++;
+                    }
+
                     fichaIA.transform.position = vectorObjetos[posIA].transform.position;
                     vectorCasillas[posIA] = 2;
                 }
@@ -278,24 +286,25 @@ public class GameMana : MonoBehaviour
 
             if (posIA == 0)
             {
+                vectorCasillas[posIA] = 0;
                 posIA = 6;
                 fichaIA.transform.position = vectorObjetos[posIA].transform.position;
                 vectorCasillas[posIA] = 2;
             }
             else if (posIA == 5)
             {
+                vectorCasillas[posIA] = 0;
                 posIA = 12;
                 fichaIA.transform.position = vectorObjetos[posIA].transform.position;
                 vectorCasillas[posIA] = 2;
             }
             else if (posIA == 4 || posIA == 9 || posIA == 13 || posIA == 18 || posIA == 19)
             {
+                vectorCasillas[posIA] = 0;
                 posIA = posIA - 3;
                 fichaIA.transform.position = vectorObjetos[posIA].transform.position;
                 vectorCasillas[posIA] = 2;
             }
-
-            vectorCasillas[(++posIA)-numdado] = 0;
 
             if (posIA != 11 && posIA != 17)
             {
