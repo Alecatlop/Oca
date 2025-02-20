@@ -23,6 +23,8 @@ public class GameMana : MonoBehaviour
     int posIA =-1;
     int numdado;
     int ronda = 1;
+
+    bool tirar = false;
     
     private void Awake()
     {
@@ -110,6 +112,11 @@ public class GameMana : MonoBehaviour
     private void Comprobarcasilla()
     {
         // comprueba el estado de la casilla si esta ocupada o no
+        if (posjugador > 20)
+        {
+            posjugador = 20;
+        }
+
         int n = vectorCasillas[posjugador];
 
         if (n == 0)
@@ -121,12 +128,15 @@ public class GameMana : MonoBehaviour
             botones.SetActive(true);
             textoaviso.text = "Elige";
             Time.timeScale = 0;
+            
         }
     }
 
     private void Movercasilla()
     {
         // Comprueba cuanto ha sacado guardando el valor en una variable para moverse a la posición de la casilla
+        
+        vectorCasillas[posjugador] = 0;
 
         if (posjugador >= 20)
         {
@@ -139,74 +149,41 @@ public class GameMana : MonoBehaviour
         {
             textoaviso.text = "VICTORIA";
             posjugador = 20;
-            fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
             Time.timeScale = 0;
         }
 
         fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
+        
 
         if (a == 1)
         {
-            vectorCasillas[posjugador] = 0;
             textoaviso.text = "Teleport";
             posjugador = posjugador + 6;
             fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
-            vectorCasillas[posjugador] = 1;
         }
         else if (a == -1)
         {
-            vectorCasillas[posjugador] = 0;
             textoaviso.text = "Retrocede";
             posjugador = posjugador - 3;
             fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
-            vectorCasillas[posjugador] = 1;
         }
         else if (a == 2)
         {
            textoaviso.text = "Tira de nuevo";
             StopAllCoroutines();
         }
+        
+        vectorCasillas[posjugador] = 1;
     }
 
-    private void MoverIA()
+    public void ComprobarIA()
     {
-        // Comprueba cuanto ha sacado guardadndo el valor en una variable para moverse a la posición de la casilla
-        int a = infoCasillas[posIA];
-
-        if (a == 99)
-        {
-            textoaviso.text = "DERROTA";
-            posIA = 20;
-            fichaIA.transform.position = vectorObjetos[posIA].transform.position;
-            Time.timeScale = 0;
-        }
-
-        fichaIA.transform.position = vectorObjetos[posIA].transform.position;
-
-        if (a == 1)
-        {
-            textoaviso.text = "IA Teleport";
-            vectorCasillas[posIA] = 0;
-            posIA = posIA + 6;
-            fichaIA.transform.position = vectorObjetos[posIA].transform.position;
-            vectorCasillas[posIA] = 2;
-        }
-        else if (a == -1)
-        {
-            textoaviso.text = "IA Retrocede";
-            vectorCasillas[posIA] = 0;
-            posIA = posIA - 3;
-            fichaIA.transform.position = vectorObjetos[posIA].transform.position;
-            vectorCasillas[posIA] = 2;
-        }
-        else if (a == 2)
-        {
-            textoaviso.text = "IA Tira de nuevo";
-            StopCoroutine(Jugar());
-        }
-        else ronda++;
-
         // comprueba el estado de la casilla si esta ocupada o no
+        if (posIA >= 20)
+        {
+            posIA = 20;
+        }
+
         int n2 = vectorCasillas[posIA];
 
         if (n2 == 0)
@@ -223,14 +200,12 @@ public class GameMana : MonoBehaviour
             {
                 posIA++;
                 fichaIA.transform.position = vectorObjetos[posIA].transform.position;
-                vectorCasillas[posIA] = 2;
             }
             // IA Retrocede
             else if (c2 == 1 || c2 == 2 || c == -1)
             {
                 posIA--;
                 fichaIA.transform.position = vectorObjetos[posIA].transform.position;
-                vectorCasillas[posIA] = 2;
             }
             // IA Random
             else
@@ -244,9 +219,50 @@ public class GameMana : MonoBehaviour
                 else posIA++;
 
                 fichaIA.transform.position = vectorObjetos[posIA].transform.position;
-                vectorCasillas[posIA] = 2;
             }
+            vectorCasillas[posIA] = 2;
         }
+    }
+    private void MoverIA()
+    {
+        vectorCasillas[posIA] = 0;
+
+        if (posIA >= 20)
+        {
+            posIA = 20;
+        }
+
+        int a = infoCasillas[posIA];
+
+        if (a == 99)
+        {
+            textoaviso.text = "DERROTA";
+            posIA = 20;
+            Time.timeScale = 0;
+        }
+
+        fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+
+        if (a == 1)
+        {
+            textoaviso.text = "IA Teleport";
+            posIA = posIA + 6;
+            fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+        }
+        else if (a == -1)
+        {
+            textoaviso.text = "IA Retrocede";
+            posIA = posIA - 3;
+            fichaIA.transform.position = vectorObjetos[posIA].transform.position;
+        }
+        else if (a == 2)
+        {
+            textoaviso.text = "IA Tira de nuevo";
+            tirar = true;
+        }
+        else ronda++;
+
+        vectorCasillas[posIA] = 2;
     }
 
     public void Retroceder()
@@ -254,6 +270,7 @@ public class GameMana : MonoBehaviour
         Time.timeScale = 1;
         posjugador = posjugador -1;
         fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
+        Movercasilla();
         botones.SetActive(false);
     }
 
@@ -262,6 +279,7 @@ public class GameMana : MonoBehaviour
         Time.timeScale = 1;
         posjugador = posjugador + 1;
         fichajugador.transform.position = vectorObjetos[posjugador].transform.position;
+        Movercasilla();
         botones.SetActive(false);
     }
 
@@ -277,19 +295,17 @@ public class GameMana : MonoBehaviour
             textodado.text = "" + numdado;
             yield return new WaitForSeconds(0.1f);
         }
-        numdado = 4;
         yield return new WaitForSeconds(1f);
         textodado.color = Color.white;
         posjugador = posjugador + numdado;
 
+        Comprobarcasilla();
         Movercasilla();
         yield return new WaitForSeconds(1f);
         Comprobarcasilla();
-        Movercasilla();
 
         yield return new WaitForSeconds(1f);
         textoaviso.text = "";
-
 
         // Turno IA
         // Lanzar el dado con un número aleatorio
@@ -302,16 +318,38 @@ public class GameMana : MonoBehaviour
             textodado.text = "" + numdado;
             yield return new WaitForSeconds(0.1f);
         }
-        numdado = 2;
         yield return new WaitForSeconds(1f);
         textodado.color = Color.white;
         posIA = posIA + numdado;
 
+        ComprobarIA();
         MoverIA();
-        yield return new WaitForSeconds(1f);
+        ComprobarIA();
 
-        textoaviso.text = "Lanza el dado";
+        if (tirar == true)
+        {
+            textodado.color = Color.red;
+            for (int i = 0; i < 12; i++)
+            {
+                numdado = Random.Range(1, 7);
+                textodado.text = "" + numdado;
+                yield return new WaitForSeconds(0.1f);
+            }
+            textodado.color = Color.white;
+            posIA = posIA + numdado;
+
+            ComprobarIA();
+            MoverIA();
+            ComprobarIA();
+            tirar = false;
+        }
+
         textoronda.text = "Ronda " + ronda;
         textoturno.text = "Turno Jugador";
+
+        if (posIA < 20 && posjugador < 20)
+        {
+            textoaviso.text = "Lanza el dado";
+        }
     }
 }
